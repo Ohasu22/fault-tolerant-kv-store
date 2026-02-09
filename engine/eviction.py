@@ -1,6 +1,6 @@
 # I am thinking because my store has limited memory capacity I need something to delete or rather remove the keys when I run out of space
 # my store has two values
-# I'll just keep it simple so like user:1 is key and Ojas is the value
+# I'll just keep it simple so like user:1 is key and Ojas is the value edit1: timestamp will be added here as well
 # I'll use a dictionary to handle this structure, its more efficient that way I guess
 
 from collections import OrderedDict
