@@ -3,6 +3,7 @@
 # I'll just keep it simple so like user:1 is key and Ojas is the value edit1: timestamp will be added here as well
 # I'll use a dictionary to handle this structure, its more efficient that way I guess
 
+'''
 from collections import OrderedDict
 
 # I need two things here, to know what my capacity is and my cache
@@ -41,3 +42,35 @@ class LRUCache:
     # this is for manual deletion, my put function is deleting automatically(LRU)
     def delete(self, key):
         self.cache.pop(key, None)
+
+'''
+
+# my store already is handling the get and my LRU is standalone rn
+# get function is returning a bool which I dont want
+# my store holds the data so I guess I wouldnt need this strategy
+# my LRU should only track keys + order, thats it
+# I'll give it one more function to tell which key to evict
+
+from collections import OrderedDict
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+
+
+    def touch(self, key):
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        else:
+            self.cache[key] = None
+
+    def remove(self, key):
+        self.cache.pop(key, None)
+
+    def evict_if_needed(self):
+        if len(self.cache) > self.capacity:
+            evicted_key, _ = self.cache.popitem(last = False)
+            return evicted_key
+        return None

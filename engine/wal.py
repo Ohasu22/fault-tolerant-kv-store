@@ -30,3 +30,11 @@ class WriteAheadLog:
     def close(self):
         self.file.close()
 
+
+# One thing I noticed is that I dont think this is optimised tbh
+# If my laptop turns off unexpectedly then I have to read my whole WAL again and redo every log
+# Okay for small logs but for like 1M+ it will the bottleneck
+
+# I might have to use something else altogether for recovery or maybe I could store it somewhere so I dont have to delete this code
+# At least my replay function works, I just need to find something that would store the logs just in case which is faster than reading the WAL again
+# I could use the store but how do I know from which time stamp to start or which timestamp to end

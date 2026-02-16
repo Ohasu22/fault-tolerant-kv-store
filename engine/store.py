@@ -22,14 +22,55 @@ class KeyValueStore:
         if ttl is not None:
             expiry = time.time() + ttl
 
-
+        #this is my WA log entry
         self.wal.log_put(key, value, expiry)
 
+        #this on is for the application in memory
         self.put_internal(key, value, expiry)
 
-    #work in progress!!!!
-    def put_internal(self, key, value, expiry):
-        self.cache[key] = (value, expiry)
+        #edit(16/02/26): now I can use this
+        #evict_if_needed return key value if its evicted else None
+        evicted = self.lru.evict_if_needed()
+        if evicted:
+            self.cache.pop(evicted,None)
+            self.wal.log_delete(evicted)
+
+    # key : (value, expiry_timestamp)
+    # similar to my get function in my eviction.py
+    def get(self, key):
+        if key not in self.cache:
+            return None
+
+        value, expiry_timestamp = self.cache[key]
+
+        if self.ttl.is_expired(expiry_timestamp):
+            self.delete(key)
+            return None
+
+        self.lru.touch(key)
+        return value
+
+    def delete(self, key):
+        if key not in self.cache:
+            return
+
+        self.wal.log_delete(key)
+
+        self.delete_internal(key)
+
+
+
+    def put_internal(self, key, value, expiry_timestamp):
+        self.cache[key] = (value, expiry_timestamp)
+        self.lru.touch(key)
+
+    def delete_internal(self, key):
+        self.cache.pop(key, None)
+        self.lru.remove(key)
+
+    def close(self):
+        self.wal.close()
+
 
 
 
