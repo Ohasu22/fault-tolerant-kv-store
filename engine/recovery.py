@@ -8,6 +8,7 @@
 
 import time
 
+
 class RecoveryManager:
     # my WALPath is the path where the WAL is stored in my memory
     #edit: python says WALPath should be lowercase so changing it to wal_path
@@ -17,7 +18,8 @@ class RecoveryManager:
     def _apply_log(self, line, store):
         if not line:
             return
-        parts = line.split()
+        #edit: learned this from GSOC project
+        parts = line.split(" ", 3)
         #edit: from my wal
         # PUT key val expiry_timestamp
         # DELETE key

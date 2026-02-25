@@ -9,7 +9,11 @@
 import json
 import time
 
-from engine.store import KeyValueStore
+#edit: dont need this line here
+# give this error: ImportError: cannot import name 'KeyValueStore' from partially initialized module '
+# engine.store' (most likely due to a circular import) (C:\Users\Ojas Gharde\Downloads\kv_store\engine\store.py)
+# reason: the import is going in circular fashion, snapshot is importing store and store is importing snapshot
+#from engine.store import KeyValueStore
 
 
 class SnapshotManager:

@@ -2,6 +2,8 @@
 # just have to import all my things and lets see where we go
 
 import time
+#just for that one parsing error, i have to do this sh*t, NEVER using Parsing again
+import json
 
 from engine.ttl import TTLManager
 from engine.wal import WriteAheadLog
@@ -74,18 +76,53 @@ class KeyValueStore:
         self.cache.pop(key, None)
         self.lru.remove(key)
 
-    def close(self):
-        self.wal.close()
-
     #edit 21/02/25
     def create_snapshot(self):
         #just needs to save the snapshot if it exists
-        pass
+        #edit(26/02/26)
+        if self.snapshot:
+            self.snapshot.save(self)
 
     def recover(self):
         #will read from the snapshot_path file and redo the put_internal function
-        pass
+        if self.snapshot:
+            self.snapshot.load(self)
 
+        try:
+            with open(self.wal.log_path, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    # parts = line.split(" ", 3)
+                    # if parts[0] == "PUT":
+                    #     _,key,value,expiry_time = parts
+                    #     expiry_time = float(expiry_time) if expiry_time != "None" else None
+                    #
+                    #     #have to check on each step, I wonder if I should just make a different function for this
+                    #     if self.ttl.is_expired(expiry_time):
+                    #         continue
+                    #
+                    #     self.put_internal(key, value,expiry_time)
+                    # elif parts[0] == "DELETE":
+                    #     _, key = parts
+                    #     self.delete_internal(key)
+                    entry = json.loads(line)
+                    if entry["op"] == "PUT":
+                        key = entry["key"]
+                        value = entry["value"]
+                        expiry_time = entry["expiry"]
 
+                        if self.ttl.is_expired(expiry_time):
+                            continue
+
+                        self.put_internal(key, value, expiry_time)
+                    elif entry["op"] == "DELETE":
+                        self.delete_internal(entry["key"])
+        except FileNotFoundError:
+            pass
+
+    def close(self):
+        self.wal.close()
 
 

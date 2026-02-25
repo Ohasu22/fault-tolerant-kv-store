@@ -7,7 +7,10 @@
 # PUT key val expiry_timestamp
 # DELETE key
 
+
+# edit: have to import json because this error is just not the error I wanna deal with
 import os
+import json
 
 class WriteAheadLog:
     def __init__(self, log_path):
@@ -20,12 +23,23 @@ class WriteAheadLog:
         os.fsync(self.file.fileno())
 
     def log_put(self, key, value, expiry):
-        line = f"PUT {key} {value} {expiry}\n"
-        self._write_and_flush(line)
+        #changing the root cause here
+        #line = f"PUT {key} {value} {expiry}\n"
+        entry = {
+            "op": "PUT",
+            "key": key,
+            "value": value,
+            "expiry": expiry
+        }
+        self._write_and_flush(json.dumps(entry) + "\n")
 
     def log_delete(self, key):
-        line = f"DELETE {key}\n"
-        self._write_and_flush(line)
+        #line = f"DELETE {key}\n"
+        entry = {
+            "op": "DELETE",
+            "key": key
+        }
+        self._write_and_flush(json.dumps(entry) + "\n")
 
     def close(self):
         self.file.close()

@@ -1,0 +1,9 @@
+{"op": "PUT", "key": "user:1", "value": "ElonMa", "expiry": null}
+{"op": "PUT", "key": "user:2", "value": "AkiraHayabuza", "expiry": null}
+{"op": "PUT", "key": "user:3", "value": "XiaoXina", "expiry": 1772052271.8020039}
+{"op": "PUT", "key": "user:1", "value": "ElonMa", "expiry": null}
+{"op": "PUT", "key": "user:2", "value": "AkiraHayabuza", "expiry": null}
+{"op": "PUT", "key": "user:3", "value": "XiaoXina", "expiry": 1772052333.7613893}
+{"op": "PUT", "key": "user:1", "value": "ElonMa", "expiry": null}
+{"op": "PUT", "key": "user:2", "value": "AkiraHayabuza", "expiry": null}
+{"op": "PUT", "key": "user:3", "value": "XiaoXina", "expiry": 1772052873.334342}
