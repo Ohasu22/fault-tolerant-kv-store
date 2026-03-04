@@ -10,6 +10,7 @@ WAL Before Crash
 ![WAL](assets/WAL_log.png)
 
 Simulated Crash + Restart
+
 python -m engine.test_recovery
 
 Output:
