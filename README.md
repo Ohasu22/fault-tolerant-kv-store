@@ -5,6 +5,16 @@ A production-style, single-node, fault-tolerant key-value store built from scrat
 
 This project implements durability, crash recovery, TTL-based expiration, bounded memory eviction, and snapshotting — combining high-performance in-memory access with persistent guarantees.
 
+🔥 Live Crash Recovery Demonstration
+WAL Before Crash
+![WAL](assets/WAL_log.png)
+
+Simulated Crash + Restart
+python -m engine.test_recovery
+
+Output:
+![Crash Recovery](assets/crash_recovery.png)
+
 📌 Motivation
 
 Modern storage engines like Redis, RocksDB, and Kafka rely on:
