@@ -33,7 +33,7 @@ Clean separation of storage concerns
 
 🏗 System Architecture
 
-![System Architecture](assets/system_architecture.png)
+                 ![System Architecture](assets/system_architecture.png)
 
 🧠 Core Design Decisions
 
